@@ -65,7 +65,7 @@ public class Vuelo {
  public boolean verificarDisponibilidad(String clase) {
      if (clase.equalsIgnoreCase("ejecutiva")) {
          return this.asientosDisponiblesEjecutiva > 0;
-     } else if (clase.equalsIgnoreCase("económica")) { 
+     } else if (clase.equalsIgnoreCase("economica")) { 
          return this.asientosDisponiblesEconomica > 0;
      }
      return false;
@@ -76,7 +76,7 @@ public class Vuelo {
           if (clase.equalsIgnoreCase("ejecutiva")) {
              this.asientosDisponiblesEjecutiva--;
              return true;
-         } else if (clase.equalsIgnoreCase("económica")) {
+         } else if (clase.equalsIgnoreCase("economica")) {
              this.asientosDisponiblesEconomica--;
              return true;
          }
@@ -91,6 +91,6 @@ public class Vuelo {
             " | Origen: " + origen + 
             " | Destino: " + destino +
             " | Disp. Ejecutiva: " + asientosDisponiblesEjecutiva +
-            " | Disp. Económica: " + asientosDisponiblesEconomica;
+            " | Disp. Economica: " + asientosDisponiblesEconomica;
  }
 }

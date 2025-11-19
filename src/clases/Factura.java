@@ -1,5 +1,7 @@
 package clases;
 
+import java.util.Objects;
+
 public class Factura {
 	//Atributos privados 
 	private String numeroFactura;
@@ -10,8 +12,9 @@ public class Factura {
 	
 	//Constructor
 	public Factura(String numeroFactura, Tiquete tiquete, double subTotal, double impuestos, double total) {
+		
 		this.numeroFactura = numeroFactura;
-		this.tiquete = tiquete;
+		this.tiquete = Objects.requireNonNull(tiquete, "El tiquete de la factura no puede ser null");;
 		this.subTotal = subTotal;
 		this.impuestos = impuestos;
 		this.total = total;
@@ -55,7 +58,7 @@ public class Factura {
 	
 	public void mostrarFactura() {
 		System.out.println("\n--- Factura ---");
-		System.out.println("Número de Factura: " + numeroFactura);
+		System.out.println("Numero de Factura: " + numeroFactura);
 		System.out.println(tiquete.toString());
 		System.out.printf("Subtotal: €%.2f\n", subTotal);
 		System.out.printf("Impuestos (13%%): €%.2f\n", impuestos);

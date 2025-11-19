@@ -18,7 +18,7 @@ public class Tiquete {
         //Calcular el monto total
         if (clase.equalsIgnoreCase("ejecutiva")) {
             this.montoTotal = vuelo.getPrecioEjecutiva();
-        } else if (clase.equalsIgnoreCase("económica")) {
+        } else if (clase.equalsIgnoreCase("economica")) {
             this.montoTotal = vuelo.getPrecioEconomica();
         } else {
             this.montoTotal = 0.0;
@@ -50,11 +50,11 @@ public class Tiquete {
     @Override
     public String toString() {
         return "\n--- Tiquete de Vuelo ---\n" +
-               "Número de Tiquete: " + numeroTiquete + "\n" +
+               "Numero de Tiquete: " + numeroTiquete + "\n" +
                "Vuelo: " + vuelo.getOrigen() + " -> " + vuelo.getDestino() + "\n" +
                "Clase: " + clase + "\n" +
                "Pasajero: " + pasajero.getNombre() + " " + pasajero.getApellido() + "\n" +
-               "Identificación: " + pasajero.getCedula() + "\n" +
-               "Costo: €" + String.format("%.2f", montoTotal);
+               "Identificacion: " + pasajero.getCedula() + "\n" +
+               "Costo: ₡" + String.format("%.2f", montoTotal);
     }
 }
