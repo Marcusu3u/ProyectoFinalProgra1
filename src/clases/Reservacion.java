@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class Reservacion {
 
-    // Relaciones
     private Pasajero persona;
     private Avion avion;
     private Factura factura;
@@ -18,8 +17,7 @@ public class Reservacion {
     private int codigo;
     private String estadoReservacion;
     private Calendar fechaHora;
-
-    // Constructor principal (solo inicializa sus propios datos)
+    
     public Reservacion(int codigo, String estadoReservacion, Calendar fechaHora) {
         this.codigo = codigo;
         this.estadoReservacion = estadoReservacion;
@@ -71,7 +69,6 @@ public class Reservacion {
         return sdf.format(fechaHora.getTime());
     }
     
- // --------- MÉTODO FACTORY (RECOMENDADO) ---------
     public static Reservacion crearReservacion(
             Pasajero persona,
             Avion avion,
@@ -80,7 +77,7 @@ public class Reservacion {
             Vuelo vuelo,
             Calendar fechaHora
     ) {
-        // Validaciones de null
+        // Validaciones
         Objects.requireNonNull(persona, "El pasajero no puede estar vacio");
         Objects.requireNonNull(avion, "El avion no puede estar vacio");
         Objects.requireNonNull(factura, "La factura no puede estar vacio");
@@ -99,7 +96,6 @@ public class Reservacion {
                 
         );
 
-        // Asignar relaciones
         r.persona = persona;
         r.avion = avion;
         r.factura = factura;

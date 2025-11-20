@@ -1,5 +1,7 @@
 package clases;
 
+
+
 public class Tiquete {
     
     private int numeroTiquete;
@@ -7,13 +9,16 @@ public class Tiquete {
     private Vuelo vuelo;     
     private String clase;     
     private double montoTotal;
+    private String fecha;
+
 
     //Constructor
-    public Tiquete(int numeroTiquete, Pasajero pasajero, Vuelo vuelo, String clase) {
+    public Tiquete(int numeroTiquete, Pasajero pasajero, Vuelo vuelo, String clase, String fecha) {
         this.numeroTiquete = numeroTiquete;
         this.pasajero = pasajero;
         this.vuelo = vuelo;
         this.clase = clase;
+        this.setFecha(fecha);
         
         //Calcular el monto total
         if (clase.equalsIgnoreCase("ejecutiva")) {
@@ -45,7 +50,8 @@ public class Tiquete {
     public double getMontoTotal() {
         return montoTotal;
     }
-
+    
+ 
     //Método toString
     @Override
     public String toString() {
@@ -55,6 +61,17 @@ public class Tiquete {
                "Clase: " + clase + "\n" +
                "Pasajero: " + pasajero.getNombre() + " " + pasajero.getApellido() + "\n" +
                "Identificacion: " + pasajero.getCedula() + "\n" +
-               "Costo: ₡" + String.format("%.2f", montoTotal);
+               "Correo: "+pasajero.getCorreo()+"\n"+
+               "Costo: ₡" + String.format("%.2f", montoTotal) + "\n"
+  	         + "Fecha:"+fecha;
+
     }
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
 }

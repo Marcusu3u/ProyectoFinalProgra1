@@ -17,7 +17,7 @@ public class Pasajero {
 	        this.correo = correo;
 	    }
 
-	    // Getter
+	    // Getter y setters
 	    public String getNombre() {
 	        return nombre;
 	    }
@@ -60,11 +60,10 @@ public class Pasajero {
 	    
 	    public String toString () {
 	    	
-	    	return "Nombre: "+nombre +
-	    			"Apellido: "+apellido+
-	    			"Cedula: "+cedula+
-	    			"telefono: "+telefono+
-	    			"Correo: "+correo;
+	    	return nombre + " " + apellido + 
+	    	           " | Cédula: " + cedula +
+	    	           " | Tel: " + telefono +
+	    	           " | Correo: " + correo;
 	    			
 	    			
 	    }

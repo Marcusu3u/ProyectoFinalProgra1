@@ -18,7 +18,7 @@ public class Botone extends JButton {
         setBorderPainted(false);
         setContentAreaFilled(false);
 
-        // --- Opcional: Hover suave ---
+        // Hover 
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 hover = true;

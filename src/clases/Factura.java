@@ -2,6 +2,7 @@ package clases;
 
 import java.util.Objects;
 
+
 public class Factura {
 	//Atributos privados 
 	private String numeroFactura;
@@ -9,15 +10,20 @@ public class Factura {
 	private double subTotal;
 	private double impuestos;
 	private double total;
-	
+	private Pasajero pasajero;
+	private String fecha;
+
 	//Constructor
-	public Factura(String numeroFactura, Tiquete tiquete, double subTotal, double impuestos, double total) {
+	public Factura(String numeroFactura, Tiquete tiquete, double subTotal, double impuestos, double total, String fecha, Pasajero pasajero) {
 		
 		this.numeroFactura = numeroFactura;
 		this.tiquete = Objects.requireNonNull(tiquete, "El tiquete de la factura no puede ser null");;
 		this.subTotal = subTotal;
 		this.impuestos = impuestos;
 		this.total = total;
+		this.fecha=fecha;
+	    this.pasajero = pasajero;
+
 	}
 	//Respectivos getters y setters para utilizar los atributos privados
 	public String getNumeroFactura() {
@@ -50,6 +56,8 @@ public class Factura {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+	
+    
 	//Respectivos métodos para calcular el total y mostrar la factura
 	public void calcularTotal() {
 		this.impuestos = this.subTotal * 0.13;
@@ -64,6 +72,27 @@ public class Factura {
 		System.out.printf("Impuestos (13%%): €%.2f\n", impuestos);
 		System.out.printf("Total: €%.2f\n", total);
 	}
+	
+	@Override
+	public String toString() {
+	    return "--- Factura ---\n"
+	         + "Numero: " + numeroFactura + "\n"
+	         +"Pasajero: " + pasajero.getNombre() + " " + pasajero.getApellido() + "\n" 
+              + "Identificacion: " + pasajero.getCedula() + "\n" 
+	         + "Subtotal: ₡" + String.format("%,.2f", subTotal) + "\n"
+	         + "Impuestos: ₡" + String.format("%,.2f", impuestos) + "\n"
+	         + "Total: ₡" + String.format("%,.2f", total) + "\n"
+	         + "Fecha:"+fecha;
+	}
+	public Pasajero getPasajero() {
+		return pasajero;
+	}
+	public void setPasajero(Pasajero pasajero) {
+		this.pasajero = pasajero;
+	}
+
+	
+	
 	
 	
 }

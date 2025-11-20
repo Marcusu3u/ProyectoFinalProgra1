@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import clases.Avion;
 import clases.Botone;
 
 public class VentanaPrincipal implements ActionListener {
@@ -25,7 +26,7 @@ public class VentanaPrincipal implements ActionListener {
 
 
 	public VentanaPrincipal() {
-
+		
 		
 		frame = new JFrame("Ventana Principal");
 		frame.setSize(800,800);
@@ -89,8 +90,10 @@ public class VentanaPrincipal implements ActionListener {
 		}
 		
 		if (e.getSource() == btnRegistro) {
+			Avion avion = new Avion("A-01", "Boeing XS", 2, 2, 2, 2);
+
 			
-			VentanaRegistro ventana = new VentanaRegistro(this);
+			new VentanaRegistro(this, avion);
 			
 		}
 		

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -22,6 +22,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
 import com.toedter.calendar.JCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import clases.Avion;
 import clases.Botone;
@@ -35,6 +37,7 @@ public class VentanaRegistro implements ActionListener {
 	
 	VentanaPrincipal principal;
 	Avion avion;
+	Vuelo vuelo;
 	JFrame frame;
 	JLabel etqorigen, etqdestino, etqclase, etqnombre, etqapellido, etqcedula, etqtelefono, etqcorreo, etqFechaYHora, lblavion;
 	JCalendar calendario;
@@ -43,12 +46,16 @@ public class VentanaRegistro implements ActionListener {
 	Botone btnGenerar, btnVerificarr, btnVolver, btnpoliticas;
 	JComboBox<String>cmbclase, cmborigen, cmbdestino;
 	JSeparator separador;
-	JTextArea areaResultado;
+	JTextArea areaResultado, areaTiquete, areafactura;
+	
+	
 	
 
-	public VentanaRegistro(VentanaPrincipal principal) {
+	public VentanaRegistro(VentanaPrincipal principal, Avion avion) {
 		
 		this.principal = principal;
+		this.avion = avion;
+		
 		
 		frame = new JFrame("Ventana: Gestion de tandas");
 		frame.setSize(1200,800);
@@ -103,7 +110,7 @@ public class VentanaRegistro implements ActionListener {
 	    
         String[] origenes = { "Guanacaste", "Limon", "Puntarenas", "Heredia", "Alajuela", "Cartago", "San Jose"};
         cmborigen = new JComboBox<>(origenes);
-        cmborigen.setBounds(510, 70, 400, 30);
+        cmborigen.setBounds(510, 70, 300, 30);
         frame.add(cmborigen);
 	    
 	    etqdestino = new JLabel ("Destino:");
@@ -114,7 +121,7 @@ public class VentanaRegistro implements ActionListener {
 	    
 	    String[] destinos = { "Guanacaste", "Limon", "Puntarenas", "Heredia", "Alajuela", "Cartago", "San Jose"};
 	    cmbdestino = new JComboBox<>(destinos);
-	    cmbdestino.setBounds(510, 130, 400, 30);
+	    cmbdestino.setBounds(510, 130, 300, 30);
         frame.add(cmbdestino);
 	    
 	    etqclase = new JLabel ("Clase:");
@@ -125,7 +132,7 @@ public class VentanaRegistro implements ActionListener {
 	    
 	    String[] clases = { "Economica", "Ejecutiva"};
 	    cmbclase = new JComboBox<>(clases);
-	    cmbclase.setBounds(510, 190, 400, 30);
+	    cmbclase.setBounds(510, 190, 300, 30);
         frame.add(cmbclase);
 	    
 	    etqnombre = new JLabel ("Nombre:");
@@ -174,9 +181,9 @@ public class VentanaRegistro implements ActionListener {
 	    etqcorreo.setBounds(960, 250, 600, 30);
 	    frame.add(etqcorreo);
 	    
-	    txtelefono = new JTextField();
-	    txtelefono.setBounds(910, 310, 200, 30);
-        frame.add(txtelefono);
+	    txtcorreo = new JTextField();
+	    txtcorreo.setBounds(910, 310, 200, 30);
+        frame.add(txtcorreo);
 	    
 	    etqFechaYHora = new JLabel ("Fecha y hora: (se seleccionan en el cuadro de la derecha)");
 	    etqFechaYHora.setForeground(new Color(96, 52, 52));
@@ -200,8 +207,6 @@ public class VentanaRegistro implements ActionListener {
         btnVolver.setBounds(910, 410, 150, 50);
         btnVolver.addActionListener(this);
         frame.add(btnVolver);
-	    
-		frame.setVisible(true);
 		
 		btnpoliticas = new Botone ("Politicas"); 
 		btnpoliticas.setBounds(135,700, 100, 30);
@@ -209,15 +214,28 @@ public class VentanaRegistro implements ActionListener {
         frame.add(btnpoliticas);
         
         areaResultado = new JTextArea();
-        areaResultado.setEditable(false); // para que solo muestre texto
-
+        areaResultado.setEditable(false); 
         JScrollPane scroll = new JScrollPane(areaResultado);
+        areaResultado.setFont(new Font("Consolas", Font.PLAIN, 15));
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-        // Coordenadas recomendadas
-        scroll.setBounds(470, 500, 300, 330);
-
+        scroll.setBounds(840, 40, 300, 200);
         frame.add(scroll);
+        
+        areaTiquete = new JTextArea();
+        areaTiquete.setEditable(false); 
+        JScrollPane scroll1 = new JScrollPane(areaTiquete);
+        areaTiquete.setFont(new Font("Consolas", Font.PLAIN, 15));
+        scroll1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll1.setBounds(790, 500, 300, 200); //(790, 500, 300, 200);
+        frame.add(scroll1);
+        
+        areafactura = new JTextArea();
+        areafactura.setEditable(false); 
+        JScrollPane scroll2 = new JScrollPane(areafactura);
+        areafactura.setFont(new Font("Consolas", Font.PLAIN, 15));
+        scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll2.setBounds(470, 500, 300, 200);
+        frame.add(scroll2);
 
 	    
 		frame.setVisible(true);
@@ -235,53 +253,97 @@ public class VentanaRegistro implements ActionListener {
 		cmbdestino.setSelectedIndex(0);
 	}
 	
-	private void generarReporte() {
+	private void generarTiqueteYFactura() {
 
-	    // Limpia el texto anterior
-	    areaResultado.setText("");
+		
+	    String nombre = txtnombre.getText();
+	    String apellidos = txtapellidos.getText();
+	    String cedula = txtcedula.getText();
+	    String telefono = txtelefono.getText();
+	    String correo = txtcorreo.getText();
 
-	    // Datos base del avión
-	    String claseSeleccionada = (String) cmbclase.getSelectedItem().toString();
-	    int disponiblesEj = avion.getAsientosDisponiblesEjecutivos();
-	    int disponiblesEco = avion.getAsientosDisponiblesEconomicos();
-	    int capacidadEj = avion.getCapacidadEjecutiva();
-	    int capacidadEco = avion.getCapacidadEconomica();
+	    Pasajero pasajero = new Pasajero(nombre, apellidos, cedula, telefono, correo);
 
-	    // Construimos el texto línea por línea
-	    String mensaje = "";
+	    Date fechaSeleccionada = calendario.getDate();
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String fechaFormateada = sdf.format(fechaSeleccionada);
 
-	    mensaje += "===== REPORTE DEL AVIÓN =====\n\n";
 
-	    mensaje += "Clase seleccionada: " + claseSeleccionada + "\n\n";
+	    Date horaSeleccionada = (Date) hora.getValue();
 
-	    mensaje += "Capacidad Ejecutiva: " + capacidadEj + "\n";
-	    mensaje += "Espacios disponibles Ejecutiva: " + disponiblesEj + "\n\n";
+	    Calendar fechaHora = Calendar.getInstance();
+	    fechaHora.setTime(fechaSeleccionada);
 
-	    mensaje += "Capacidad Económica: " + capacidadEco + "\n";
-	    mensaje += "Espacios disponibles Económica: " + disponiblesEco + "\n\n";
+	    Calendar horaCal = Calendar.getInstance();
+	    horaCal.setTime(horaSeleccionada);
 
-	    // Si quieres mostrar asiento por asiento en modo simple:
-	    mensaje += "Listado simple de asientos Ejecutiva:\n";
-	    for (int i = 1; i <= capacidadEj; i++) {
-	        if (i <= capacidadEj - disponiblesEj) {
-	            mensaje += "Asiento " + i + ": OCUPADO\n";
-	        } else {
-	            mensaje += "Asiento " + i + ": LIBRE\n";
-	        }
+	    fechaHora.set(Calendar.HOUR_OF_DAY, horaCal.get(Calendar.HOUR_OF_DAY));
+	    fechaHora.set(Calendar.MINUTE, horaCal.get(Calendar.MINUTE));
+
+
+	    String origen = cmborigen.getSelectedItem().toString();
+	    String destino = cmbdestino.getSelectedItem().toString();
+	    String clase = cmbclase.getSelectedItem().toString();
+
+	    Vuelo vuelo = new Vuelo("V-01", origen, destino, 35000, 70000);
+
+
+	    if (!avion.verificarDisponibilidad(clase)) {
+	        JOptionPane.showMessageDialog(null, "No hay asientos disponibles en esta clase " + clase);
+	        return;
 	    }
 
-	    mensaje += "\n\nListado simple de asientos Económica:\n";
-	    for (int i = 1; i <= capacidadEco; i++) {
-	        if (i <= capacidadEco - disponiblesEco) {
-	            mensaje += "Asiento " + i + ": OCUPADO\n";
-	        } else {
-	            mensaje += "Asiento " + i + ": LIBRE\n";
-	        }
+
+	    if (clase.equalsIgnoreCase("Economica")) {
+	        avion.setAsientosDisponiblesEconomicos(
+	            avion.getAsientosDisponiblesEconomicos() - 1
+	        );
+	    } else {
+	        avion.setAsientosDisponiblesEjecutivos(
+	            avion.getAsientosDisponiblesEjecutivos() - 1
+	        );
 	    }
 
-	    // Ya construido → lo mostramos en el textarea
-	    areaResultado.setText(mensaje);
+	    Tiquete tiquete = new Tiquete( new Random().nextInt(10000),
+							            pasajero,
+							            vuelo,
+							            clase,
+							            fechaFormateada
+	    );
+
+
+	    //CREAR FACTURA
+	    double precio = clase.equalsIgnoreCase("Economica") ? vuelo.getPrecioEconomica() : vuelo.getPrecioEjecutiva();
+
+	    double subtotal = precio;
+	    double impuestos = subtotal * 0.13;
+	    double total = subtotal + impuestos;
+
+	    Factura factura = new Factura(	"#F:" + new Random().nextInt(10000),
+							            tiquete,
+							            subtotal,
+							            impuestos,
+							            total,
+							            fechaFormateada,
+							            pasajero
+	    );
+
+
+	    //RESERVACION
+	    Reservacion reservacion = Reservacion.crearReservacion(	pasajero,
+													            avion,
+													            factura,
+													            tiquete,
+													            vuelo,
+													            fechaHora
+	    );
+
+	    areaTiquete.setText(tiquete.toString());
+	    areafactura.setText(factura.toString());
+
+	    JOptionPane.showMessageDialog(null, "¡Reservación generada con éxito!");
 	}
+
 
 	
 	@Override
@@ -372,118 +434,39 @@ public class VentanaRegistro implements ActionListener {
 		
 		if (e.getSource() == btnGenerar) {
 
-		    try {
-		        // 1️⃣ Datos del pasajero
-		        String nombre = txtnombre.getText().trim();
-		        String apellido = txtapellidos.getText().trim();
-		        String cedula = txtcedula.getText().trim();
-		        String telefono = txtelefono.getText().trim();
-		        String correo = txtcorreo.getText().trim();
-
-		        if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty()) {
-		            JOptionPane.showMessageDialog(null,
-		                    "Complete todos los campos obligatorios");
-		            return;
-		        }
-
-		        Pasajero pasajero = new Pasajero(nombre, apellido, cedula, telefono, correo);
-
-
-		        // 2️⃣ Datos de origen – destino – clase
-		        String origen = (String) cmborigen.getSelectedItem();
-		        String destino = (String) cmbdestino.getSelectedItem();
-		        String clase = (String) cmbclase.getSelectedItem();
-
-
-		        // 3️⃣ Fecha y hora unidas en un Calendar
-		        Calendar fecha = Calendar.getInstance();
-		        fecha.setTime(calendario.getDate()); // fecha del JCalendar
-
-		        java.util.Date horaSeleccionada = (java.util.Date) hora.getValue();
-		        Calendar aux = Calendar.getInstance();
-		        aux.setTime(horaSeleccionada);
-
-		        fecha.set(Calendar.HOUR_OF_DAY, aux.get(Calendar.HOUR_OF_DAY));
-		        fecha.set(Calendar.MINUTE, aux.get(Calendar.MINUTE));
-
-
-		        // 4️⃣ Crear vuelo según tu modelo
-		        Vuelo vuelo = new Vuelo(
-		                "V-" + new Random().nextInt(99999),
-		                origen,
-		                destino,
-		                200, // precio económica
-		                450  // precio ejecutiva
-		        );
-
-
-		        // 5️⃣ Verificar espacio disponible
-		        if (!vuelo.verificarDisponibilidad(clase)) {
-		            JOptionPane.showMessageDialog(null,
-		                    "No hay asientos disponibles en clase " + clase);
-		            return;
-		        }
-
-		        vuelo.reservarAsiento(clase);
-
-
-		        // 6️⃣ Crear tiquete
-		        double precioTiquete = clase.equalsIgnoreCase("Ejecutiva")
-		                ? vuelo.getPrecioEjecutiva()
-		                : vuelo.getPrecioEconomica();
-
-		        Tiquete tiquete = new Tiquete(
-		                new Random().nextInt(1000),
-		                pasajero,
-		                vuelo,
-		                clase
-		 
-		        );
-
-
-		        // 7️⃣ Crear factura
-		        Factura factura = new Factura(
-		                "F-" + new Random().nextInt(99999),
-		                tiquete,
-		                precioTiquete,
-		                precioTiquete * 0.13,
-		                precioTiquete * 1.13
-		        );
-
-
-		        // 8️⃣ Crear reservación final
-		        Reservacion reserva = Reservacion.crearReservacion(
-		                pasajero,
-		                null,   // Aquí va Avion si luego lo agregas
-		                factura,
-		                tiquete,
-		                vuelo,
-		                fecha
-		        );
-
-
-		        // 9️⃣ Mensaje final
-		        JOptionPane.showMessageDialog(null,
-		                "Reservación generada!\n\n" +
-		                "Código: " + reserva.getCodigo() + "\n" +
-		                "Tiquete: " + tiquete.getNumeroTiquete() + "\n" +
-		                "Total: " + factura.getTotal());
-
-		    } catch (Exception ex) {
-		        JOptionPane.showMessageDialog(null,
-		                "Ocurrió un error: " + ex.getMessage());
-		    }
+			generarTiqueteYFactura();
+			limpiarCampos();
 		    
-		    generarReporte();
+		    
 		}
 		
-	}
-		
-		
-	public static void main (String[]args) {
-		
-		new VentanaRegistro(null);
-		
+		if (e.getSource() == btnVerificarr) {
+			
+			String origen = (String) cmborigen.getSelectedItem();
+	        String destino = (String) cmbdestino.getSelectedItem();
+	        String clase = (String) cmbclase.getSelectedItem();
+
+	        StringBuilder msg = new StringBuilder();
+
+	        msg.append("🔎 VERIFICACION DEL ESTADO DEL VUELO\n");
+	        msg.append("--------------------------------------------------\n");
+	        msg.append("Origen: ").append(origen).append("\n");
+	        msg.append("Destino: ").append(destino).append("\n");
+	        msg.append("Clase seleccionada: ").append(clase).append("\n\n");
+
+	        msg.append("INFORMACIÓN DEL AVION\n");
+	        msg.append("Codigo: ").append(avion.getCodigoAvion()).append("\n");
+	        msg.append("Modelo: ").append(avion.getModelo()).append("\n");
+	        msg.append("Capacidad Ejecutiva: ").append(avion.getCapacidadEjecutiva()).append("\n");
+	        msg.append("Capacidad Economica: ").append(avion.getCapacidadEconomica()).append("\n\n");
+
+	        msg.append("DISPONIBILIDAD DE ASIENTOS\n");
+
+
+	        areaResultado.setText(msg.toString()+"Disponibilidad de campos\n" +
+	        	    "Economicos: " + avion.getAsientosDisponiblesEconomicos() + "\n" +
+	        	    "Ejecutivos: " + avion.getAsientosDisponiblesEjecutivos());
+	    }
 	}
 
 }

@@ -3,7 +3,7 @@ package clases;
 import javax.swing.JOptionPane;
 
 public class Avion {
-	//Sus respectivos atributos .|.
+	//Sus respectivos atributos 
 	private String codigoAvion;
 	private String modelo;
 	private int capacidadEjecutiva = 2;
@@ -69,12 +69,12 @@ public class Avion {
 	public boolean verificarDisponibilidad(String clase) {
 		if (clase.equalsIgnoreCase("Ejecutiva")) {
 			if (asientosDisponiblesEjecutivos <= 0) {
-				JOptionPane.showMessageDialog(null, "Existe: "+capacidadEjecutiva+" espacios.");
+				JOptionPane.showMessageDialog(null, "Existe: "+asientosDisponiblesEjecutivos+" espacios.");
 				return false;
 			}
 		} else if (clase.equalsIgnoreCase("Economica")) {
 			if (asientosDisponiblesEconomicos <= 0) {
-				JOptionPane.showMessageDialog(null, "Existe: "+capacidadEconomica+" espacios.");
+				JOptionPane.showMessageDialog(null, "Existe: "+asientosDisponiblesEconomicos+" espacios.");
 
 				return false;
 			}
@@ -84,5 +84,13 @@ public class Avion {
 		
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+	    return modelo + " (" + codigoAvion + ")" +
+	           " | Cap. Ejecutivo: " + capacidadEjecutiva +
+	           " | Cap. Economica: " + capacidadEconomica;
+	}
+
 
 }
