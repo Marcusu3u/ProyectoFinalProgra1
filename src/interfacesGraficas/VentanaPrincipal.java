@@ -88,6 +88,12 @@ public class VentanaPrincipal implements ActionListener {
 			System.exit(3);
 		}
 		
+		if (e.getSource() == btnRegistro) {
+			
+			VentanaRegistro ventana = new VentanaRegistro(this);
+			
+		}
+		
 	}
 	
 	public static void main(String[] args) {

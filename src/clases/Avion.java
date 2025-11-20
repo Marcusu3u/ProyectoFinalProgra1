@@ -1,5 +1,7 @@
 package clases;
 
+import javax.swing.JOptionPane;
+
 public class Avion {
 	//Sus respectivos atributos .|.
 	private String codigoAvion;
@@ -67,10 +69,13 @@ public class Avion {
 	public boolean verificarDisponibilidad(String clase) {
 		if (clase.equalsIgnoreCase("Ejecutiva")) {
 			if (asientosDisponiblesEjecutivos <= 0) {
+				JOptionPane.showMessageDialog(null, "Existe: "+capacidadEjecutiva+" espacios.");
 				return false;
 			}
 		} else if (clase.equalsIgnoreCase("Economica")) {
 			if (asientosDisponiblesEconomicos <= 0) {
+				JOptionPane.showMessageDialog(null, "Existe: "+capacidadEconomica+" espacios.");
+
 				return false;
 			}
 		} else {

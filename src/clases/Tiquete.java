@@ -2,14 +2,14 @@ package clases;
 
 public class Tiquete {
     
-    private String numeroTiquete;
+    private int numeroTiquete;
     private Pasajero pasajero;
     private Vuelo vuelo;     
     private String clase;     
     private double montoTotal;
 
     //Constructor
-    public Tiquete(String numeroTiquete, Pasajero pasajero, Vuelo vuelo, String clase) {
+    public Tiquete(int numeroTiquete, Pasajero pasajero, Vuelo vuelo, String clase) {
         this.numeroTiquete = numeroTiquete;
         this.pasajero = pasajero;
         this.vuelo = vuelo;
@@ -26,7 +26,7 @@ public class Tiquete {
     }
 
     //Getters
-    public String getNumeroTiquete() {
+    public int getNumeroTiquete() {
         return numeroTiquete;
     }
 
